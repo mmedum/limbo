@@ -29,4 +29,4 @@ async def process_mail(request):
 
 
 if __name__ == '__main__':
-    app.run(access_log=True, host='0.0.0.0', port=8000)
+    app.run(access_log=True, host='0.0.0.0', port=80)
