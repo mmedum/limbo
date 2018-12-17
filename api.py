@@ -24,10 +24,9 @@ async def metrics(request):
 
 @app.post('/mail', version=1)
 async def process_mail(request):
-    received = request.json
-    logger.info(received)
     return json({'Message': 'ok'})
 
 
 if __name__ == '__main__':
+    logger.info('Starting Limbo')
     app.run(access_log=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8000)))
