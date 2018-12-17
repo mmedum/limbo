@@ -1,18 +1,32 @@
-import responder
-
-api = responder.API()
-
-
-@api.route("/health")
-def health(req, resp):
-    resp.media = {"health": "ok"}
-#    resp.status_code = api.status_codes.HTTP_200
+from sanic import Sanic
+from sanic.log import logger
+from sanic.response import json
 
 
-@api.route("/")
-def hello_world(req, resp):
-    resp.text = "Hello World!"
+app = Sanic('limbo')
 
 
-if __name__ == "__main__":
-    api.run()
+@app.get('/')
+async def hello_world(request):
+    return json({'hello': 'world'})
+
+
+@app.get('/health')
+async def health(request):
+    return json({'health': 'ok'})
+
+
+@app.get('/metrics')
+async def metrics(request):
+    return json({'metrics': 'ok'})
+
+
+@app.post('/mail', version=1)
+async def process_mail(request):
+    received = request.json
+    logger.info(received)
+    return json({'Message': 'ok'})
+
+
+if __name__ == '__main__':
+    app.run(access_log=True, host='0.0.0.0', port=8000)
