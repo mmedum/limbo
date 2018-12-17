@@ -1,3 +1,4 @@
+import os
 from sanic import Sanic
 from sanic.log import logger
 from sanic.response import json
@@ -29,4 +30,4 @@ async def process_mail(request):
 
 
 if __name__ == '__main__':
-    app.run(access_log=True, host='0.0.0.0', port=80)
+    app.run(access_log=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8000)))
