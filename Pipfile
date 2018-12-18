@@ -9,6 +9,8 @@ verify_ssl = true
 sanic = "*"
 aiohttp = "*"
 requests = "*"
+sanic-compress = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.7"

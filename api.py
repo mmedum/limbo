@@ -1,10 +1,22 @@
 import os
 from sanic import Sanic
+from sanic_compress import Compress
 from sanic.log import logger
 from sanic.response import json
-
+from handlers.sqs_handler import SqsHandler
 
 app = Sanic('limbo')
+Compress(app)
+
+
+@app.listener('before_server_start')
+async def setup_sqs(app, loop):
+    app.sqs = SqsHandler()
+
+
+@app.listener('before_server_stop')
+async def notify_server_stopping(app, loop):
+    logger.info('Server shutting down!')
 
 
 @app.get('/')
@@ -24,10 +36,11 @@ async def metrics(request):
 
 @app.post('/mail', version=1)
 async def process_mail(request):
+    app.sqs.send_message(request.json)
     return json({'Message': 'ok'})
 
 
 if __name__ == '__main__':
-    logger.info('Starting Limbo')
+    logger.info('Starting server')
     app.run(access_log=False, debug=False, host='0.0.0.0',
             port=int(os.environ.get('PORT', 8000)))
