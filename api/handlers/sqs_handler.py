@@ -15,6 +15,6 @@ class SqsHandler:
         while should_try_sending:
             message['uuid'] = str(uuid.uuid4())
             messagebody = json.dumps(message)
-            response = self._queue.send_message(MessageGroupId='1', MessageBody=json.dumps(messagebody))
+            response = self._queue.send_message(MessageGroupId='1', MessageBody=messagebody)
             if response:
                 should_try_sending = False
