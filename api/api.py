@@ -37,7 +37,7 @@ async def metrics(request):
 @app.post('/mail', version=1)
 async def process_mail(request):
     app.sqs.send_message(request.json)
-    return json({'Message': 'ok'})
+    return json({'Message': 'submitted'})
 
 
 if __name__ == '__main__':
