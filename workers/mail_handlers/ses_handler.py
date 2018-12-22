@@ -14,11 +14,11 @@ class SESHandler(BaseHandler):
         def build_destination_object(elements):
             dest = {}
             if elements['to']:
-                dest['ToAddresses'] = [','.join(map(str, elements['to']))]
+                dest['ToAddresses'] = elements['to']
             if elements['cc']:
-                dest['CcAddresses'] = [','.join(map(str, elements['cc']))]
+                dest['CcAddresses'] = elements['cc']
             if elements['bcc']:
-                dest['BccAddresses'] = [','.join(map(str, elements['bcc']))]
+                dest['BccAddresses'] = elements['bcc']
             return dest
 
         try:
