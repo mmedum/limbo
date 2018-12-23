@@ -68,6 +68,7 @@ Submit of emails to the service
 `POST /v1/mail`
 
 **Request Body**
+
 | Key | Value type | Description  |
 | --- | --- | --- |
 | from | string | email address for the sender |
