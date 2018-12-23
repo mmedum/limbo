@@ -13,6 +13,11 @@ class SqsHandler:
     def send_message(self, message):
         should_try_sending = True
         while should_try_sending:
+            # TODO should handle the duplication problem with sqs
+            # better, than just generating a uuid, by using
+            # content deduplication, each message needs to be fully
+            # unique when looking at the contents, which is solved by
+            # using this uuid at the moment.
             message['uuid'] = str(uuid.uuid4())
             messagebody = json.dumps(message)
             response = self._queue.send_message(MessageGroupId='1', MessageBody=messagebody)

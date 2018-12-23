@@ -44,4 +44,3 @@ class SESHandler(BaseHandler):
 
         except ClientError as e:
             logging.error(f'Not possible to send email through ses failed with error {e}')
-            return False

@@ -6,6 +6,10 @@ from random import shuffle
 from mail_handlers import ses_handler, mailgun_handler
 
 
+# TODO
+# Should using the deadletter queue, at the moment the naive approach
+# is adding a message, when it has been 'taken' three times from the queue.
+
 def setup_handlers():
     '''
     Factory method for setting up handlers for the worker
@@ -16,7 +20,7 @@ def setup_handlers():
 
 
 def process_messages():
-    logging.info('Starting up')
+    logging.info('Starting processing messages')
     sqs = boto3.resource('sqs', region_name=os.environ.get('REGION'))
     queue = sqs.get_queue_by_name(QueueName=os.environ.get('QUEUE'))
 
