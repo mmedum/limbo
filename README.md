@@ -72,12 +72,9 @@ Submit of emails to the service
 | Key | Value type | Description | Param |
 | --- | --- | --- | --- |
 | from | string | email address for the sender | required |
-| to | list of strings | list of emails that should recieve the message |
-required |
-| cc | list of strings | list of emails that should be cc on the message |
-optional |
-| bcc | list of strings | list of emails that should be bcc on the message |
-optional |
+| to | list of strings | list of emails that should recieve the message | required |
+| cc | list of strings | list of emails that should be cc on the message | optional |
+| bcc | list of strings | list of emails that should be bcc on the message | optional |
 | subject | string | subject of the message | required |
 | message | string | contents of the message | required |
 
