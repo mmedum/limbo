@@ -69,14 +69,17 @@ Submit of emails to the service
 
 **Request Body**
 
-| Key | Value type | Description  |
-| --- | --- | --- |
-| from | string | email address for the sender |
+| Key | Value type | Description | Param |
+| --- | --- | --- | --- |
+| from | string | email address for the sender | required |
 | to | list of strings | list of emails that should recieve the message |
+required |
 | cc | list of strings | list of emails that should be cc on the message |
+optional |
 | bcc | list of strings | list of emails that should be bcc on the message |
-| subject | string | subject of the message |
-| message | string | contents of the message |
+optional |
+| subject | string | subject of the message | required |
+| message | string | contents of the message | required |
 
 ```json
 {
