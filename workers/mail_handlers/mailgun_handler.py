@@ -18,4 +18,7 @@ class MailgunHandler(BaseHandler):
                   'to': message['to'],
                   'subject': message['subject'],
                   'text': message['message']})
-        return response.ok
+        if response.status_code == 200:
+            return True
+        else:
+            return False
