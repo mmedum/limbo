@@ -40,6 +40,7 @@ async def process_mail(request):
     # This method only solves adding the message to a queue.
     # Validation could be done by using regex, which is kinda
     # terrible, since there is no official RFC
+    # TODO Needs better error handling if sqs is down
     app.sqs.send_message(request.json)
     return json({'Message': 'submitted'})
 
