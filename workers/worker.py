@@ -2,6 +2,7 @@ import logging
 import boto3
 import os
 import json
+from random import shuffle
 from mail_handlers import ses_handler, mailgun_handler
 
 
@@ -9,7 +10,9 @@ def setup_handlers():
     '''
     Factory method for setting up handlers for the worker
     '''
-    return [ses_handler.SESHandler(), mailgun_handler.MailgunHandler()]
+    handlers = [ses_handler.SESHandler(), mailgun_handler.MailgunHandler()]
+    shuffle(handlers)
+    return handlers
 
 
 def process_messages():
