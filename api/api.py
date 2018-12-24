@@ -4,6 +4,8 @@ from sanic_compress import Compress
 from sanic.log import logger
 from sanic.response import json
 from handlers.sqs_handler import SqsHandler
+import message_validator as validater
+
 
 app = Sanic('limbo')
 Compress(app)
@@ -41,8 +43,11 @@ async def process_mail(request):
     # Validation could be done by using regex, which is kinda
     # terrible, since there is no official RFC
     # TODO Needs better error handling if sqs is down
-    app.sqs.send_message(request.json)
-    return json({'Message': 'submitted'})
+    request_body = request.json
+    should_send, return_msg, status_code = validater.validate_body(request_body)
+    if should_send:
+        app.sqs.send_message(request_body)
+    return json(return_msg, status=status_code)
 
 
 if __name__ == '__main__':
