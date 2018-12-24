@@ -37,11 +37,14 @@ class SESHandler(BaseHandler):
                     },
                 },
                 Source=os.environ.get('SESSOURCE'))
-            if response['ResponseMetadata']['HTTPStatusCode'] == 200:
-                return True
+
+            status_code = response['ResponseMetadata']['HTTPStatusCode']
+            if status_code == 200:
+                return True, False
+            elif status_code >= 400 and status_code <= 499:
+                return False, True
             else:
-                return False
+                return False, False
 
         except ClientError as e:
             logging.error(f'Not possible to send email through ses failed with error {e}')
-            return False
