@@ -18,7 +18,10 @@ class MailgunHandler(BaseHandler):
                   'to': message['to'],
                   'subject': message['subject'],
                   'text': message['message']})
-        if response.status_code == 200:
-            return True
+        status_code = response.status_code
+        if status_code == 200:
+            return True, False
+        elif status_code >= 400 and status_code <= 499:
+            return False, True
         else:
-            return False
+            return False, False

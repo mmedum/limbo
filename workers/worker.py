@@ -23,6 +23,7 @@ def process_messages():
     logging.info('Starting processing messages')
     sqs = boto3.resource('sqs', region_name=os.environ.get('REGION'))
     queue = sqs.get_queue_by_name(QueueName=os.environ.get('QUEUE'))
+    deadletter_queue = sqs.get_queue_by_name(QueueName=os.environ.get('DEADLETTERQUEUE'))
 
     handlers = setup_handlers()
 
@@ -31,11 +32,17 @@ def process_messages():
         messages = queue.receive_messages(WaitTimeSeconds=20, MaxNumberOfMessages=10)
         for message in messages:
             messsage_body = json.loads(message.body)
+
             success = False
+            dead_message = False
             handler_index = 0
-            while not success and handler_index < len(handlers):
-                success = handlers[handler_index].send_mail(messsage_body)
+            while not success and not dead_message and handler_index < len(handlers):
+                success, dead_message = handlers[handler_index].send_mail(messsage_body)
                 handler_index += 1
+
+            if dead_message:
+                deadletter_queue.send_message(MessageGroupId='1', MessageBody=messsage_body)
+                message.delete()
             if success:
                 message.delete()
 
