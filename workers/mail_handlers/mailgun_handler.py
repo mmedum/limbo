@@ -13,15 +13,17 @@ class MailgunHandler(BaseHandler):
     def send_mail(self, message):
         def build_data_object(elements):
             dest = {}
-            if elements['to']:
+            if 'from' in elements:
+                dest['from'] = elements['from']
+            if 'to' in elements:
                 dest['to'] = elements['to']
-            if elements['cc']:
+            if 'cc' in elements:
                 dest['cc'] = elements['cc']
-            if elements['bcc']:
+            if 'bcc' in elements:
                 dest['bcc'] = elements['bcc']
-            if elements['subject']:
+            if 'subject' in elements:
                 dest['subject'] = elements['subject']
-            if elements['message']:
+            if 'message' in elements:
                 dest['text'] = elements['message']
             return dest
 
