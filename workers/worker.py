@@ -41,7 +41,7 @@ def process_messages():
                 handler_index += 1
 
             if dead_message:
-                deadletter_queue.send_message(MessageGroupId='1', MessageBody=messsage_body)
+                deadletter_queue.send_message(MessageGroupId='1', MessageBody=json.dumps(messsage_body))
                 message.delete()
             if success:
                 message.delete()
