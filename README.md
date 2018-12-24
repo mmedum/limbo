@@ -148,3 +148,23 @@ Submit of emails to the service
     "Message": "submitted"
 }
 ```
+
+**Response**
+- `400` on failure
+
+```json
+{
+    "Message": "not submitted",
+    "Problem": "no receivers defined'
+}
+```
+
+**Response**
+- `400` on failure
+
+```json
+{
+    "Message": "not submitted",
+    "Problem": "no to defined"
+}
+```
