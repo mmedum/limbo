@@ -150,7 +150,7 @@ Submit of emails to the service
 ```
 
 **Response**
-- `400` on failure
+- `400 Bad Request` on failure
 
 ```json
 {
@@ -160,7 +160,7 @@ Submit of emails to the service
 ```
 
 **Response**
-- `400` on failure
+- `400 Bad Request` on failure
 
 ```json
 {
