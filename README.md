@@ -6,6 +6,42 @@ High-level architecture drawing
 
 ![alt text](imgs/architecture.png "Architecture")
 
+This repository contains two high level elements, one `api` and `workers`.
+
+### Api
+
+`api` handles web request from a user, that wants to send emails, endpoints is
+defined as in API further down. For every request received the `api` handles
+submitting every message to an queue, which at the moment is FIFO sqs queue on
+aws. 
+
+### Workers
+
+`workers` is polling sqs for messages and for every message it handles sending
+the email. For one worker it, at the moment, contains two implementations; one
+which uses AWS SES and another using Mailgun.
+
+## Dependencies
+
+Limbo makes use of
+
+- AWS SQS
+- AWS SNS
+- Mailgun
+
+The rest of the dependencies are defined as part of Pipfile
+
+## Environment values
+
+```quote
+QUEUE=<sqs queue>
+DEADLETTERQUEUE=<deadletter sqs queue>
+REGION=<aws region>
+SESSOURCE=<email used for ses>
+MAILGUN=<mailgun api key>
+DOMAIN=<mailgun domain>
+```
+
 ## API
 
 ### Root
