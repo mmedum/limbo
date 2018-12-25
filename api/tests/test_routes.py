@@ -62,6 +62,36 @@ class TestRoutes(unittest.TestCase):
         self.assertEqual(response.status, 400)
         self.assertEqual(response.json, expected_output)
 
+    def test_mail_submit_no_subject_returns_400_and_expected_output(self):
+        expected_output = {
+            'Message': 'not submitted',
+            'Problem': 'no subject defined'
+        }
+
+        test_body = {
+            'from': 'test@test.com',
+            'to': ['test@test.com'],
+            'message': 'message_test'
+        }
+        request, response = app.test_client.post('/v1/mail', data=json.dumps(test_body))
+        self.assertEqual(response.status, 400)
+        self.assertEqual(response.json, expected_output)
+
+    def test_mail_submit_no_message_returns_400_and_expected_output(self):
+        expected_output = {
+            'Message': 'not submitted',
+            'Problem': 'no message defined'
+        }
+
+        test_body = {
+            'from': 'test@test.com',
+            'to': ['test@test.com'],
+            'subject': 'subject_test',
+        }
+        request, response = app.test_client.post('/v1/mail', data=json.dumps(test_body))
+        self.assertEqual(response.status, 400)
+        self.assertEqual(response.json, expected_output)
+
     def test_mail_submit_multiple_receivers_returns_200(self):
         expected_output = {
             'Message': 'submitted'
@@ -85,7 +115,7 @@ class TestRoutes(unittest.TestCase):
         test_body = {
             'from': 'from@test.com',
             'to': ['test@test.com'],
-            'cc': ['test@test.com'],
+            'cc': ['test@test.com', 'test@test.com'],
             'subject': 'subject_test',
             'message': 'message_test'
         }
