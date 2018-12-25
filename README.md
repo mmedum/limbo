@@ -34,6 +34,10 @@ Further considerations should also be made on have more mail handlers is
 introduced, at the moment it is one single implementation file per handler, and
 already this gives some common implementation details between the handlers.
 
+Finally monitoring and maybe even tracing would be the next logical step for
+guaranteeing production stability, especially regarding user requests, but also
+for identifying how workers operate. 
+
 ### Api
 
 `api` handles web request from a user, that wants to send emails, endpoints is
