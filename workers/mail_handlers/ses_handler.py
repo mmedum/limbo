@@ -13,11 +13,11 @@ class SESHandler(BaseHandler):
     def send_mail(self, message):
         def build_destination_object(elements):
             dest = {}
-            if elements['to']:
+            if 'to' in elements:
                 dest['ToAddresses'] = elements['to']
-            if elements['cc']:
+            if 'cc' in elements:
                 dest['CcAddresses'] = elements['cc']
-            if elements['bcc']:
+            if 'bcc' in elements:
                 dest['BccAddresses'] = elements['bcc']
             return dest
 
