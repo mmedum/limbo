@@ -36,7 +36,10 @@ already this gives some common implementation details between the handlers.
 
 Finally monitoring and maybe even tracing would be the next logical step for
 guaranteeing production stability, especially regarding user requests, but also
-for identifying how workers operate. 
+for identifying how workers operate. A full production implementation would also
+handle the deadletter queue, both by using monitoring, so operations can react
+on a high number of messages and figure out if either messages or environments
+have problems.
 
 ### Api
 
@@ -50,6 +53,20 @@ aws.
 `workers` is polling sqs for messages and for every message it handles sending
 the email. For one worker it, at the moment, contains two implementations; one
 which uses AWS SES and another using Mailgun.
+
+Every worker create a list containing all implementations, which is shuffled,
+just by using the python random function, this is for pseudo guaranteeing that
+mail sending is sent evenly through the different implementations. Of course
+there is handling around, that if one worker does not sent a message, the
+message will be retried by all other workers, until one hopefully gets success.
+If one specific message is not possible to send by any of the implementations of
+the workers, then the message will be returned to AWS SQS, where another worker
+will pick up the message and try again. A message can at maximum be touched
+three times before ending up on a deadletter queue. It is also possible for the
+message to end up on a deadletter queue, if there is any HTTP status code in the
+4xx range.
+
+
 
 ## Dependencies
 
