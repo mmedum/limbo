@@ -9,7 +9,7 @@ High-level architecture drawing
 This repository contains two high level elements, one `api` and `workers`.
 Overall the design is based on handling a few things.
 
-- Seperation of submitting emails and sending them, but queueing messages that
+- Separation of submitting emails and sending them, but queueing messages that
   have been submitted, scaling now becomes a thing around either scaling to more
   workers, which then would process messages on the queue faster or scaling the
   api, so more messages can be submitted.
@@ -22,7 +22,17 @@ between the user and the services, which means at the moment the only response
 the user actually gets, is whether or not the message has been submitted to the
 queue. This could, as part of future work, be handled by keeping a log of all
 request for every user together with having a authentication for users, so the
-communication between `api` and user is possible.
+communication between `api` and user is possible even after finished request.
+
+With the design in mind, there is a consideration in actually stopping
+interacting with the user, so the only thing the user actually knows is that the
+message is queued. Another consideration is that this implementation clearly
+uses elements from AWS, which now create a thightly couple design between the
+service and AWS. 
+
+Further considerations should also be made on have more mail handlers is
+introduced, at the moment it is one single implementation file per handler, and
+already this gives some common implementation details between the handlers.
 
 ### Api
 
@@ -56,6 +66,13 @@ REGION=<aws region>
 SESSOURCE=<email used for ses>
 MAILGUN=<mailgun api key>
 DOMAIN=<mailgun domain>
+```
+
+## Testing
+
+For executing test, please run
+```bash
+python -m unittest
 ```
 
 ## API
@@ -155,16 +172,6 @@ Submit of emails to the service
 ```json
 {
     "Message": "not submitted",
-    "Problem": "no receivers defined'
-}
-```
-
-**Response**
-- `400 Bad Request` on failure
-
-```json
-{
-    "Message": "not submitted",
-    "Problem": "no to defined"
+    "Problem": <description of problem>
 }
 ```
